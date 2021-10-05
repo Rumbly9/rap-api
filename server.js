@@ -1,19 +1,20 @@
 const express = require("express")
 const app = express()
-const fs = require("fs")
-const cors = require("cors")
 const https = require("https")
+const fs = require("fs")
+// const cors = require("cors")
+
 
 const credentials = {
-  privateKey : fs.readFileSync("key.pem"),
-  certificate : fs.readFileSync("cert.pem")
+  key: fs.readFileSync(__dirname + "/key.pem"),
+  cert: fs.readFileSync(__dirname + "/cert.pem")
 }
 
 const httpsServer = https.createServer(credentials, app)
 
 const PORT = 8000
 
-app.use(cors())
+// app.use(cors())
 
 let rappers = {
   "21 savage": {
@@ -47,6 +48,6 @@ app.get("/api/rappers/:rapperName", (request, response) => {
   }
 })
 
-httpsServer.listen(process.env.PORT || PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
   console.log(`server running on port: ${PORT}`)
 })
