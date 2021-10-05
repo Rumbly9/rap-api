@@ -1,6 +1,16 @@
 const express = require("express")
 const app = express()
+const fs = require("fs")
 const cors = require("cors")
+const https = require("https")
+
+const credentials = {
+  privateKey : fs.readFileSync("key.pem"),
+  certificate : fs.readFileSync("cert.pem")
+}
+
+const httpsServer = https.createServer(credentials, app)
+
 const PORT = 8000
 
 app.use(cors())
@@ -37,6 +47,6 @@ app.get("/api/rappers/:rapperName", (request, response) => {
   }
 })
 
-app.listen(process.env.PORT || PORT, () => {
+httpsServer.listen(process.env.PORT || PORT, () => {
   console.log(`server running on port: ${PORT}`)
 })
